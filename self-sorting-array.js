@@ -87,7 +87,11 @@ export class SelfSortingArray extends Array{
 		return this.sort( comparator)
 	}
 	clone(){
-		return new this.constructor( this[ $comparator], this)
+		const copy= new this.constructor( this[ $comparator])
+		for( var i in this){
+			copy[ i]= this[ i]
+		}
+		return copy
 	}
 }
 export default SelfSortingArray

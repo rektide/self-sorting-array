@@ -5,7 +5,7 @@ function basic( a, b){
 	return a- b
 }
 
-tape( "self-sorting-array can sort numbers", function(t){
+tape( "self-sorting-array can sort numbers", function( t){
 	const ssa= new SelfSortingArray( basic)
 	ssa.push( 50, 10, 0, 30, 60, 40, 20)
 	t.equal( ssa.length, 7, "element count")
@@ -19,7 +19,7 @@ tape( "self-sorting-array can sort numbers", function(t){
 	t.end()
 })
 
-tape( "self-sorting-array can do a variety of changes", function(t){
+tape( "self-sorting-array can do a variety of changes", function( t){
 	const ssa= new SelfSortingArray( basic, 60, 40)
 	t.equal( ssa[ 0], 40, "constructor")
 	t.equal( ssa[ 1], 60)
@@ -44,5 +44,21 @@ tape( "self-sorting-array can do a variety of changes", function(t){
 	t.equal( ssa[ 0], 40)
 	t.equal( ssa[ 1], 50)
 	t.equal( ssa[ 2], 60)
+	t.end()
+})
+
+tape( "self-sorting-array can clone", function( t){
+	const
+	  ssa1= new SelfSortingArray( basic, 50, 40, 60),
+	  ssa2= ssa1.clone()
+	t.equal( ssa2.length, 3)
+	t.equal( ssa2[ 0], 40)
+	t.equal( ssa2[ 1], 50)
+	t.equal( ssa2[ 2], 60)
+
+	ssa2.push( 30)
+	t.equal( ssa2.length, 4)
+	t.equal( ssa2[ 0], 30)
+	t.equal( ssa2[ 1], 40)
 	t.end()
 })
