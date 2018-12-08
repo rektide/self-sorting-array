@@ -2,10 +2,23 @@ import binarySearch from "binary-search"
 
 export const $comparator= Symbol.for( "self-sorting-array:comparator")
 
+let _speciesHack= false
+
 export class SelfSortingArray extends Array{
 	static get [Symbol.species](){
 		return SelfSortingArray
 	}
+	static make( comparator, ...items){
+		let array= new SelfSortingArray()
+		array[ $comparator]= comparator
+		if( items.length){
+			array.splice( 0, 0, ...items)
+		}
+	}
+	static get [ Symbol.species](){
+		return _speciesHack? Array: SelfSortingArray
+	}
+
 	constructor( comparator, ...items){
 		super()
 		this[ $comparator]= comparator
@@ -13,9 +26,10 @@ export class SelfSortingArray extends Array{
 			this.splice( 0, 0, ...items)
 		}
 	}
+
 	splice( i, del, ...items){
-		console.log("a")
 		// remove deleted elements
+		_speciesHack= true
 		Array.prototype.splice.call( this, i, del)
 		// insert new elements
 		for( let item of items){
@@ -26,16 +40,24 @@ export class SelfSortingArray extends Array{
 			}
 			Array.prototype.splice.call( this, j, 0, item)
 		}
+		_speciesHack= false
 		return this.length
+	}
+	pop(){
+		return this.splice( this.length- 1, 1)[ 0]
 	}
 	push( ...items){
-		this.splice( this.length- 1, 0, ...items)
+		this.splice( 0, 0, ...items) // splice will sort
 		return this.length
+	}
+	shift(){
+		return this.splice( 0, 1)[ 0]
 	}
 	unshift( ...items){
-		this.splice( 0, 0, ...items)
+		this.splice( 0, 0, ...items) // splice will wort
 		return this.length
 	}
+	
 	fill( value, start= 0, end= this.length){
 		// remove old
 		const count= end- start
@@ -52,14 +74,20 @@ export class SelfSortingArray extends Array{
 			fillers[ j]= value
 		}
 		// insert fill
+		_speciesHack= true
 		Array.prototype.splice.call( this, i, 0, fillers)
+		_speciesHack= false
 		return this
 	}
-	sort( compareFunction){
-		if( !compareFunction|| compareFunction=== this[ $compare]){
+	sort( comparator){
+		if( !comparator|| comparator=== this[ $compare]){
 			return this
 		}
-		return this.sort( compareFunction)
+		this[ $comparator]= comparator
+		return this.sort( comparator)
+	}
+	clone(){
+		return new this.constructor( this[ $comparator], this)
 	}
 }
 export default SelfSortingArray
