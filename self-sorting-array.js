@@ -30,7 +30,7 @@ export class SelfSortingArray extends Array{
 	splice( i, del, ...items){
 		// remove deleted elements
 		_speciesHack= true
-		Array.prototype.splice.call( this, i, del)
+		const removed= Array.prototype.splice.call( this, i, del)
 		// insert new elements
 		for( let item of items){
 			let j= binarySearch( this, item, this[ $comparator])
@@ -41,10 +41,11 @@ export class SelfSortingArray extends Array{
 			Array.prototype.splice.call( this, j, 0, item)
 		}
 		_speciesHack= false
-		return this.length
+		return removed
 	}
 	pop(){
-		return this.splice( this.length- 1, 1)[ 0]
+		this.splice( this.length- 1, 1)[ 0]
+		return this.length
 	}
 	push( ...items){
 		this.splice( 0, 0, ...items) // splice will sort

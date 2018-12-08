@@ -24,23 +24,27 @@ tape( "self-sorting-array can do a variety of changes", function( t){
 	t.equal( ssa[ 0], 40, "constructor")
 	t.equal( ssa[ 1], 60)
 
-	ssa.shift()
+	const shift= ssa.shift()
 	t.equal( ssa.length, 1, "shift")
+	t.equal( shift, 40)
 	t.equal( ssa[ 0], 60)
 
-	ssa.unshift( 70, 50)
+	const unshift= ssa.unshift( 70, 50)
 	t.equal( ssa.length, 3, "unshift")
+	t.equal( unshift, 3)
 	t.equal( ssa[ 0], 50)
 	t.equal( ssa[ 1], 60)
 	t.equal( ssa[ 2], 70)
 
-	ssa.push( 40)
+	const push= ssa.push( 40)
 	t.equal( ssa.length, 4, "push")
+	t.equal( push, 4)
 	t.equal( ssa[ 0], 40)
 	t.equal( ssa[ 1], 50) //&c
 
-	ssa.pop()
+	const pop= ssa.pop()
 	t.equal( ssa.length, 3, "pop")
+	t.equal( pop, 3)
 	t.equal( ssa[ 0], 40)
 	t.equal( ssa[ 1], 50)
 	t.equal( ssa[ 2], 60)
@@ -60,5 +64,17 @@ tape( "self-sorting-array can clone", function( t){
 	t.equal( ssa2.length, 4)
 	t.equal( ssa2[ 0], 30)
 	t.equal( ssa2[ 1], 40)
+	t.end()
+})
+
+tape( "self-sort-array can splice", function( t){
+	const
+	  ssa= new SelfSortingArray( basic, 30, 10, 20, 40),
+	  removed= ssa.splice( 1, 2, 15)
+	t.equal( ssa.length, 3)
+	t.equal( ssa[ 1], 15)
+	t.equal( ssa[ 2], 40)
+	t.equal( removed[ 0], 20, "removed")
+	t.equal( removed[ 1], 30)
 	t.end()
 })
