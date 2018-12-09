@@ -1,6 +1,6 @@
 {
 	"name": "self-sorting-array",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "An array that automatically sorts itself on modification",
 	"main": "self-sorting-array.js",
 	"scripts": {
@@ -19,6 +19,7 @@
 		"binary-search": "^1.3.4"
 	},
 	"devDependencies": {
+		"esm": "^3.1.1",
 		"tape": "^4.9.1"
 	}
 }

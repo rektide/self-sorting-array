@@ -2,7 +2,7 @@ import binarySearch from "binary-search"
 
 export const $comparator= Symbol.for( "self-sorting-array:comparator")
 
-let _speciesHack= false
+export let _speciesHack= false
 
 export class SelfSortingArray extends Array{
 	static get [Symbol.species](){
@@ -25,6 +25,9 @@ export class SelfSortingArray extends Array{
 		if( items&& items.length){
 			this.splice( 0, 0, ...items)
 		}
+	}
+	get comparator(){
+		return this[ $comparator]
 	}
 
 	splice( i, del, ...items){
